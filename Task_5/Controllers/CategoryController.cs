@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Hotel_Api.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,38 +18,39 @@ namespace Task_5.Controllers
     public class CategoryController : ControllerBase
     {
         IService<CategoryDTO> categoryService;
+        IMapper mapper;
         public CategoryController(IService<CategoryDTO> categoryService)
         {
             this.categoryService = categoryService;
+            mapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, CategoryModel>().ReverseMap()).CreateMapper();
         }
 
         // GET: api/<CategoryController>
         [HttpGet]
-        public IEnumerable<CategoryDTO> Get()
+        public IEnumerable<CategoryModel> Get()
         {
-            var temp = categoryService.GetAll();
-            return temp;
+            return mapper.Map<IEnumerable<CategoryDTO>, IEnumerable<CategoryModel>>(categoryService.GetAll());
         }
 
         // GET api/<CategoryController>/5
         [HttpGet("{id}")]
-        public CategoryDTO Get(Guid id)
+        public CategoryModel Get(Guid id)
         {
-            return categoryService.Get(id);
+            return mapper.Map<CategoryDTO,CategoryModel>(categoryService.Get(id));
         }
 
         // POST api/<CategoryController>
         [HttpPost]
-        public void Post([FromBody] CategoryDTO item)
+        public void Post([FromBody] CategoryModel item)
         {
-            categoryService.Create(item);
+            categoryService.Create(mapper.Map<CategoryModel,CategoryDTO>(item));
         }
 
         // PUT api/<CategoryController>/5
         [HttpPut]
-        public void Put([FromBody] CategoryDTO item)
+        public void Put([FromBody] CategoryModel item)
         {
-            categoryService.Update(item);
+            categoryService.Update(mapper.Map<CategoryModel, CategoryDTO>(item));
         }
 
         // DELETE api/<CategoryController>/5

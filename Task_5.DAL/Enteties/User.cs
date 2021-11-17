@@ -11,7 +11,7 @@ namespace Task_5.DAL.Enteties
     {
         public User()
         {
-            id = new Guid();
+            id = Guid.NewGuid();
         }
         [Key]
         public Guid id { get;  set; }

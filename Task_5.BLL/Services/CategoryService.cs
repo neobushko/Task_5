@@ -26,6 +26,8 @@ namespace Task_5.BLL.Services
         }
         public void Create(CategoryDTO item)
         {
+            if (_unit.Categories.Get(item.id) is not null)
+                throw new ArgumentException($"there is already such category with id: {item.id.ToString()}");
             _unit.Categories.Create(mapper.Map<CategoryDTO,Category>(item));
             _unit.Save();
         }
@@ -38,8 +40,12 @@ namespace Task_5.BLL.Services
 
         public CategoryDTO Get(Guid id)
         {
-            return mapper.Map<Category, CategoryDTO>(_unit.Categories.Get(id));
-            
+            var category = mapper.Map<Category, CategoryDTO>(_unit.Categories.Get(id));
+            if (category == null)
+                throw new ArgumentException($"there is no category with current id ({id})");
+            return category;
+
+
         }
 
         public IEnumerable<CategoryDTO> GetAll()

@@ -14,12 +14,12 @@ namespace TestProject1
         {
         }
 
-        [Test]
-        public void Test1()
-        {
+        //[Test]
+        //public void Test1()
+        //{
             
-            var mock = new Mock<IUnitOfWork>();
-            mock.Setup(s => s.Records.GetAll()).Returns()
-        }
+        //    var mock = new Mock<IUnitOfWork>();
+        //    mock.Setup(s => s.Records.GetAll()).Returns()
+        //}
     }
 }

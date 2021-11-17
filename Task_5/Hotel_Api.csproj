@@ -23,4 +23,14 @@
     <ProjectReference Include="..\Task_5.DAL\Task_5.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\" />
+    <Folder Include="Content\" />
+    <Folder Include="Fonts\" />
+    <Folder Include="RequestModels\" />
+    <Folder Include="Views\" />
+    <Folder Include="Scripts\" />
+    <Folder Include="ResponseModels\" />
+  </ItemGroup>
+
 </Project>
