@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task_5.DAL", "Task_5.DAL\Ta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task_5.BLL", "Task_5.BLL\Task_5.BLL.csproj", "{3F0BD740-7760-423F-856D-1DF584E66DB6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject1", "TestProject1\TestProject1.csproj", "{7CBF15EB-8A29-422B-89BB-31046BB111CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicesTests", "TestProject1\ServicesTests.csproj", "{7CBF15EB-8A29-422B-89BB-31046BB111CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControllersTests", "ControllersTests\ControllersTests.csproj", "{8F9589A2-E3C0-43D4-A50A-A1FC6A44DB0E}"
 EndProject

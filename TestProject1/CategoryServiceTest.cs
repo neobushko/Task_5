@@ -37,6 +37,7 @@ namespace TestProject1
 
             Assert.IsInstanceOf(ExpectedResult, ActualResult);
         }
+
         [TestCase("adc0d03a-2d43-42f6-9062-4bf9ccdb5a00")]
         [TestCase("adc0d03a-2d43-42f6-9062-4bf9ccdb5eee")]
         [TestCase("adc0d03a-2d43-42f6-9062-4bf9ccdb5e04")]
@@ -47,6 +48,7 @@ namespace TestProject1
 
             Assert.Throws<ArgumentException>(() => categoryService.Get(CatId));
         }
+
         [TestCase(typeof(IEnumerable<CategoryDTO>))]
         public void GetAll_Method_TypeTest(Type ExpectedResult)
         {
@@ -57,12 +59,13 @@ namespace TestProject1
             //Assert
             Assert.IsInstanceOf(ExpectedResult, ActualResult);
         }
+
         [TestCase("some text", "adc0d03a-2d43-42f6-9062-4bf9ccdb5a00")]
         [TestCase("some text (2)", "e5765d4a-ed05-4d91-b428-f7b3a20e7f76")]
         public void Create_Method_Success_AddingNewCategoryTest(string description, string id)
         {
             //Arrange
-            CategoryDTO categoryDTO = new CategoryDTO() { Decription = description, id = new Guid(id) };
+            CategoryDTO categoryDTO = new CategoryDTO() { Description = description, id = new Guid(id) };
             mockWorkUnit.Setup(s => s.Categories.Create(map.Map<CategoryDTO, Category>(categoryDTO)));
             mockWorkUnit.Setup(s => s.Categories.GetAll()).Returns(fakeData.Categories);
             //Act
@@ -70,6 +73,7 @@ namespace TestProject1
             //Assert
             mockWorkUnit.Verify(x => x.Categories.Create(map.Map<CategoryDTO, Category>(categoryDTO)));
         }
+
         [TestCase("adc0d03a-2d43-42f6-9062-4bf9ccdb5a01")]
         [TestCase("adc0d03a-2d43-42f6-9062-4bf9ccdb5a02")]
         public void Create_ThrowArgumentException_WhenCategoryExist(string id)
@@ -79,8 +83,9 @@ namespace TestProject1
             mockWorkUnit.Setup(x => x.Categories.Get(categoryId)).
                 Returns(fakeData.Categories.SingleOrDefault(s => s.id == categoryId));
             //Act and Assert
-            Assert.Throws<ArgumentException>(() => categoryService.Create(new CategoryDTO() { id = categoryId, Decription = "" }));
+            Assert.Throws<ArgumentException>(() => categoryService.Create(new CategoryDTO() { id = categoryId, Description = "" }));
         }
+
         [TestCase("adc0d03a-2d43-42f6-9062-4bf9ccdb5a01")]
         public void Delete_DeleteCategory_WhenCategoryExsists(string id)
         {
