@@ -33,11 +33,26 @@ namespace Task_5.Controllers
         }
 
         // GET api/<CategoryController>/5
-        [HttpGet("{id}")]
-        public CategoryModel Get(Guid id)
+        [HttpGet("{item}")]
+        public CategoryModel Get(Guid item)
         {
-            return mapper.Map<CategoryDTO,CategoryModel>(categoryService.Get(id));
+            try
+            {
+                var category = mapper.Map<CategoryDTO, CategoryModel>(categoryService.Get(item));
+                return category;
+            }
+            catch
+            {
+                return new CategoryModel() { Name = "No such category" };
+            }
+            
         }
+
+/*        [HttpGet("{item}")]
+        public CategoryModel Get(string item)
+        {
+            return mapper.Map<CategoryDTO, CategoryModel>(categoryService.Get(item));
+        }*/
 
         // POST api/<CategoryController>
         [HttpPost]

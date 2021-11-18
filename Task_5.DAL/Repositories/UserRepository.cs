@@ -42,6 +42,7 @@ namespace Task_5.DAL.Repositories
         public void Update(User item)
         {
             var user = Get(item.id);
+            user.id = item.id;
             user.Name = item.Name;
             user.ContactPhone = item.ContactPhone;
             user.Email = item.Email;

@@ -20,5 +20,17 @@ namespace Task_5.DAL.Enteties
         public string Email { get;  set; }
 
         public IEnumerable<Record> Records { get;  set; }
+        public override bool Equals(object obj)
+        {
+            if(obj is User)
+            {
+                var thatObj = obj as User;
+                return this.id == thatObj.id
+                    && this.Name == thatObj.Name
+                    && this.ContactPhone == thatObj.ContactPhone
+                    && this.Email == thatObj.Email;
+            }
+            else return base.Equals(obj);
+        }
     }
 }

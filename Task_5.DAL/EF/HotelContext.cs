@@ -21,7 +21,6 @@ namespace Task_5.DAL.EF
         public HotelContext(DbContextOptions<HotelContext> options)
             : base(options)
         {
-
             Database.EnsureCreated();
         }
 

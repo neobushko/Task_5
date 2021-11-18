@@ -41,11 +41,13 @@ namespace Task_5.DAL.Repositories
         public void Update(PriceforCategory item)
         {
             var price = Get(item.id);
+            price.id = item.id;
             price.Category = item.Category;
             price.CategoryId = item.CategoryId;
             price.StartDate = item.StartDate;
             price.EndDate = item.EndDate;
             price.Price = item.Price;
+            price.Name = item.Name;
         }
     }
 }

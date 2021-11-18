@@ -9,6 +9,7 @@ namespace Task_5.BLL.DTO
     public class PriceforCategoryDTO
     {
         public Guid id { get; set; }
+        public string Name { get; set; }
         public Guid CategoryId { get; set; }
         public CategoryDTO Category { get; set; }
         public decimal Price { get; set; }

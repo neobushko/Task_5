@@ -36,6 +36,8 @@ namespace Task_5.DAL.Repositories
         {
             return context.Categories.Single(c => c.id == id);
         }
+/*        public Category Get(string name)
+            => context.Categories.Single(s => s.Name == name);*/
 
         public IEnumerable<Category> GetAll()
         {
@@ -46,7 +48,8 @@ namespace Task_5.DAL.Repositories
         public void Update(Category item)
         {
             var category = Get(item.id);
-
+            category.id = item.id;
+            category.Name = item.Name;
             category.Decription = item.Decription;
         }
     }

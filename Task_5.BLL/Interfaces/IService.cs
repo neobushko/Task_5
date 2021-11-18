@@ -13,5 +13,6 @@ namespace Task_5.BLL.Interfaces
         void Create(T item);
         void Update(T item);
         void Delete(Guid id);
+        bool IsExistsId(Guid id);
     }
 }

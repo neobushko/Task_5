@@ -24,19 +24,29 @@ namespace Task_5.BLL.Services
         }
         public void Create(UserDTO item)
         {
-            _unit.Users.Create(mapper.Map<UserDTO, User>(item));
-            _unit.Save();
+            if (!IsExistsId(item.id))
+            {
+                _unit.Users.Create(mapper.Map<UserDTO, User>(item));
+                _unit.Save();
+            }
         }
 
         public void Delete(Guid id)
         {
-            _unit.Users.Delete(id);
-            _unit.Save();
+            if (IsExistsId(id))
+            {
+                _unit.Users.Delete(id);
+                _unit.Save();
+            }
         }
 
         public UserDTO Get(Guid id)
         {
-            return mapper.Map<User, UserDTO>(_unit.Users.Get(id));
+            if (IsExistsId(id))
+            {
+                return mapper.Map<User, UserDTO>(_unit.Users.Get(id));
+            }
+            else throw new ArgumentException();
         }
 
         public IEnumerable<UserDTO> GetAll()
@@ -46,8 +56,19 @@ namespace Task_5.BLL.Services
 
         public void Update(UserDTO item)
         {
-            _unit.Users.Update(mapper.Map<UserDTO, User>(item));
-            _unit.Save();
+            if (IsExistsId(item.id))
+            {
+                _unit.Users.Update(mapper.Map<UserDTO, User>(item));
+                _unit.Save();
+            }
+        }
+        public bool IsExistsId(Guid id)
+        {
+            bool IsExist = false;
+            var price = mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(_unit.Users.GetAll());
+            if (price.Any(c => c.id == id))
+                IsExist = true;
+            return IsExist;
         }
     }
 }

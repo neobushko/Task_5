@@ -26,19 +26,29 @@ namespace Task_5.BLL.Services
         }
         public void Create(RoomDTO item)
         {
-            _unit.Rooms.Create(mapper.Map<RoomDTO, Room>(item));
-            _unit.Save();
+            if (!IsExistsId(item.id))
+            {
+                _unit.Rooms.Create(mapper.Map<RoomDTO, Room>(item));
+                _unit.Save();
+            }
         }
 
         public void Delete(Guid id)
         {
-            _unit.Rooms.Delete(id);
-            _unit.Save();
+            if (IsExistsId(id))
+            {
+                _unit.Rooms.Delete(id);
+                _unit.Save();
+            }
         }
 
         public RoomDTO Get(Guid id)
         {
-            return mapper.Map<Room, RoomDTO>(_unit.Rooms.Get(id));
+            if (IsExistsId(id))
+            {
+                return mapper.Map<Room, RoomDTO>(_unit.Rooms.Get(id));
+            }
+            else throw new ArgumentException();
         }
 
         public IEnumerable<RoomDTO> GetAll()
@@ -48,8 +58,19 @@ namespace Task_5.BLL.Services
 
         public void Update(RoomDTO item)
         {
-            _unit.Rooms.Update(mapper.Map<RoomDTO, Room>(item));
-            _unit.Save();
+            if (IsExistsId(item.id))
+            {
+                _unit.Rooms.Update(mapper.Map<RoomDTO, Room>(item));
+                _unit.Save();
+            }
+        }
+        public bool IsExistsId(Guid id)
+        {
+            bool IsExist = false;
+            var price = mapper.Map<IEnumerable<Room>, IEnumerable<RoomDTO>>(_unit.Rooms.GetAll());
+            if (price.Any(c => c.id == id))
+                IsExist = true;
+            return IsExist;
         }
     }
 }

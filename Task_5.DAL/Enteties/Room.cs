@@ -13,7 +13,6 @@ namespace Task_5.DAL.Enteties
         public Room()
         {
             id = Guid.NewGuid();
-
         }
         [Key]
         public Guid id { get;  set; }
@@ -24,5 +23,17 @@ namespace Task_5.DAL.Enteties
         public string Decription { get;  set; }
 
         public IEnumerable<Record> Records { get;  set; }
+        public override bool Equals(object obj)
+        {
+            if(obj is Room)
+            {
+                var thatObj = obj as Room;
+                return this.id == thatObj.id
+                    && this.Number == thatObj.Number
+                    && this.CategoryId == thatObj.CategoryId
+                    && this.Decription == thatObj.Decription;
+            }
+            else return base.Equals(obj);
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace Task_5.BLL.Services
         }
         public void Create(RecordDTO item)
         {
-            if(this.BaseService.IsFreeRoom(item.RoomId, item.CheckIn, item.CheckOut))
+            if(this.BaseService.IsFreeRoom(item.RoomId, item.CheckIn, item.CheckOut) && !IsExistsId(item.id))
             {
                 _unit.Records.Create(mapper.Map<RecordDTO, Record>(item));
                 _unit.Save();
@@ -41,13 +41,20 @@ namespace Task_5.BLL.Services
 
         public void Delete(Guid id)
         {
-            _unit.Records.Delete(id);
-            _unit.Save();
+            if (IsExistsId(id))
+            {
+                _unit.Records.Delete(id);
+                _unit.Save();
+            }
         }
 
         public RecordDTO Get(Guid id)
         {
-            return mapper.Map<Record, RecordDTO>(_unit.Records.Get(id));
+            if (IsExistsId(id))
+            {
+                return mapper.Map<Record, RecordDTO>(_unit.Records.Get(id));
+            }
+            else throw new ArgumentException();
         }
 
         public IEnumerable<RecordDTO> GetAll()
@@ -55,10 +62,22 @@ namespace Task_5.BLL.Services
             return mapper.Map<IEnumerable<Record>, IEnumerable<RecordDTO>>(_unit.Records.GetAll());
         }
 
+        public bool IsExistsId(Guid id)
+        {
+            bool IsExist = false;
+            var price = mapper.Map<IEnumerable<Record>, IEnumerable<RecordDTO>>(_unit.Records.GetAll());
+            if (price.Any(c => c.id == id))
+                IsExist = true;
+            return IsExist;
+        }
+
         public void Update(RecordDTO item)
         {
-            _unit.Records.Update(mapper.Map<RecordDTO, Record>(item));
-            _unit.Save();
+            if (IsExistsId(item.id))
+            {
+                _unit.Records.Update(mapper.Map<RecordDTO, Record>(item));
+                _unit.Save();
+            }
         }
     }
 }

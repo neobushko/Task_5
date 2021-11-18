@@ -42,6 +42,7 @@ namespace Task_5.DAL.Repositories
         public void Update(Record item)
         {
             var record = Get(item.id);
+            record.id = item.id;
             record.RoomId = item.RoomId;
             record.Room = item.Room;
             record.UserId = item.UserId;
