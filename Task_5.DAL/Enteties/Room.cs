@@ -16,6 +16,7 @@ namespace Task_5.DAL.Enteties
         }
         [Key]
         public Guid id { get;  set; }
+        [Required]
         public int Number { get;  set; }
         public Guid CategoryId { get;  set; }
         [ForeignKey("CategoryId")]

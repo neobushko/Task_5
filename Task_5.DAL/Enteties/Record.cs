@@ -22,7 +22,11 @@ namespace Task_5.DAL.Enteties
         public Guid UserId { get;  set; }
         [ForeignKey("UserId")]
         public User User { get;  set; }
+        [Required]
+        [DataType(DataType.Date)]
         public DateTime CheckIn { get;  set; }
+        [Required]
+        [DataType(DataType.Date)]
         public DateTime CheckOut { get;  set; }
 
         public override bool Equals(object obj)

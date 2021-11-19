@@ -15,6 +15,9 @@ namespace Task_5.DAL.Enteties
         }
         [Key]
         public Guid id { get;  set; }
+        [Required]
+        [DataType(DataType.Text)]
+        [MinLength(2, ErrorMessage = "Минимальная длина имени 2 символов!")]
         public string Name { get; set; }
         public string Description { get;  set; }
         public IEnumerable<Room> Rooms { get;  set; }

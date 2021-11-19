@@ -21,7 +21,7 @@ namespace Task_5.DAL.Repositories
 
         public void Create(PriceforCategory item)
         {
-            if (_hotelContext.Prices.Find(item.id) != null)
+            if (_hotelContext.Prices.Find(item.id) != null || item.Price < 0 || item.EndDate < item.StartDate)
                 throw new ArgumentException();
             _hotelContext.Prices.Add(item);
         }
@@ -54,9 +54,13 @@ namespace Task_5.DAL.Repositories
                 price.Category = item.Category;
                 price.CategoryId = item.CategoryId;
             }
-            price.StartDate = item.StartDate;
-            price.EndDate = item.EndDate;
-            price.Price = item.Price;
+            if (item.EndDate > item.StartDate)
+            {
+                price.StartDate = item.StartDate;
+                price.EndDate = item.EndDate;
+            }
+            if (item.Price > 0)
+                price.Price = item.Price;
             price.Name = item.Name ?? price.Name;
         }
     }

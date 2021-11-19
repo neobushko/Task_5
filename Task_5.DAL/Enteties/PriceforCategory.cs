@@ -14,15 +14,21 @@ namespace Task_5.DAL.Enteties
         {
             id = Guid.NewGuid();
         }
+        private decimal _price;
         [Key]
         public Guid id { get; set; }
+        [Required]
         public string Name { get; set; }
         public Guid CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
+        [Required]
         public decimal Price { get; set; }
-
+        [Required]
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
         public override bool Equals(object obj)
         {

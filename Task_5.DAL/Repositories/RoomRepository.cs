@@ -21,7 +21,7 @@ namespace Task_5.DAL.Repositories
 
         public void Create(Room item)
         {
-            if (context.Rooms.Find(item.id) != null)
+            if (context.Rooms.Find(item.id) != null && item.Number < 0)
                 throw new ArgumentException($"there is already Room with such id: {item.id}");
             if (context.Rooms.Find(item.CategoryId) == null)
                 throw new ArgumentException($"there is no Category with id: {item.CategoryId}");
