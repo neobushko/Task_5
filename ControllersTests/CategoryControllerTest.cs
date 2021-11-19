@@ -1,4 +1,4 @@
-using AutoMapper;
+/*using AutoMapper;
 using Moq;
 using NUnit.Framework;
 using System.Net.Http;
@@ -58,7 +58,7 @@ namespace ControllersTests
             Assert.IsInstanceOf(ExpectedResult, ActualResult);
         }
         [TestCase("737a6171-09f6-4883-8f04-0216b7edfef8", "some description")]
-        public void Post_EvokeCategoryService_Create(string id, string description)
+        public void Post_EnvokeCategoryService_Create(string id, string description)
         {
             //Arrange
             var categoryModel = new CategoryModel() { id = new Guid(id), Description = description };
@@ -70,4 +70,4 @@ namespace ControllersTests
         }
 
     }
-}
+}*/

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,15 +33,16 @@ namespace Task_5.DAL.Repositories
 
         public PriceforCategory Get(Guid id)
         {
-            var price = _hotelContext.Prices.Single(c => c.id == id);
+            var price = _hotelContext.Prices.Include(u => u.Category).Single(c => c.id == id);
             if (price == null)
                 throw new ArgumentException();
             return price;
         }
 
+
         public IEnumerable<PriceforCategory> GetAll()
         {
-            return _hotelContext.Prices.ToList();
+            return _hotelContext.Prices.Include(u => u.Category).ToList();
         }
 
         public void Update(PriceforCategory item)

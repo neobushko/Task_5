@@ -44,11 +44,11 @@ namespace Task_5
             services.AddDbContext<HotelContext>(options => options.UseSqlServer(conString));
             services.AddTransient<IBaseService, BaseService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<IService<RoomDTO>, RoomService>();
-            services.AddTransient<IService<RecordDTO>,RecordService>();
-            services.AddTransient<IService<CategoryDTO>, CategoryService>();
+            services.AddTransient<IRoomService, RoomService>();
+            services.AddTransient<IRecordService, RecordService>();
+            services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IService<UserDTO>, UserService>();
-            services.AddTransient<IService<PriceforCategoryDTO>, PriceforCategoryService>();
+            services.AddTransient<IPriceforCategoryService, PriceforCategoryService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -74,7 +74,9 @@ namespace Task_5
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                     name: "default",
+                     pattern: "{controller}/{action}/{id?}");
             });
         }
     }

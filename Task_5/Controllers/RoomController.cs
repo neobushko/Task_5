@@ -16,9 +16,9 @@ namespace Task_5.Controllers
     [ApiController]
     public class RoomController : ControllerBase
     {
-        IService<RoomDTO> roomController;
+        IRoomService roomController;
         IMapper mapper;
-        public RoomController(IService<RoomDTO> roomController)
+        public RoomController(IRoomService roomController)
         {
             this.roomController = roomController;
             mapper = new MapperConfiguration(
@@ -51,7 +51,20 @@ namespace Task_5.Controllers
                 return new RoomModel() { id = new Guid()};
             }
         }
-
+        [HttpGet("Number")]
+        public IEnumerable<RoomModel> GetByNumber(int Number)
+        {
+            try
+            {
+                var rooms = mapper.Map<IEnumerable<RoomDTO>, IEnumerable<RoomModel>>(roomController.GetByNumber(Number));
+                return rooms;
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 404;
+                return new List<RoomModel>();
+            }
+        }
         // POST api/<RoomController>
         [HttpPost]
         public void Post([FromBody] RoomModel item)

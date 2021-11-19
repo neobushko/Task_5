@@ -49,10 +49,10 @@ namespace Task_5.BLL.Services
             IEnumerable<RecordDTO> records = mapper.Map<IEnumerable<Record>, IEnumerable<RecordDTO>>(_unit.Records.GetAll());
 
             free = records.Where(c => c.RoomId == roomId &&
-            (!(checkOut < c.CheckIn) ||
-            checkOut <= c.CheckOut ||
-            checkIn <= c.CheckOut));
-
+            ((checkOut.Day >= c.CheckIn.Day &&
+            checkOut.Day <= c.CheckOut.Day) ||
+            checkIn.Day <= c.CheckOut.Day &&
+            checkOut.Day <= c.CheckIn.Day));
             return !free.Any();
         }
 

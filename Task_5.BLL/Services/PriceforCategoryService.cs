@@ -11,7 +11,7 @@ using Task_5.DAL.Interfaces;
 
 namespace Task_5.BLL.Services
 {
-    public class PriceforCategoryService : IService<PriceforCategoryDTO>
+    public class PriceforCategoryService : IPriceforCategoryService
     {
         private IUnitOfWork _unit;
         IMapper mapper;
@@ -46,6 +46,11 @@ namespace Task_5.BLL.Services
         public IEnumerable<PriceforCategoryDTO> GetAll()
         {
             return mapper.Map<IEnumerable<PriceforCategory>, IEnumerable<PriceforCategoryDTO>>(_unit.PriceforCategories.GetAll());
+        }
+
+        public IEnumerable<PriceforCategoryDTO> GetAllByPartName(string Name)
+        {
+            return mapper.Map<IEnumerable<PriceforCategory>, IEnumerable<PriceforCategoryDTO>>(_unit.PriceforCategories.GetAll().Where(c => c.Name.ToLower().Contains(Name.ToLower())));
         }
 
         public void Update(PriceforCategoryDTO item)

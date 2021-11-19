@@ -30,6 +30,7 @@ namespace Task_5.DAL.Repositories
 
         public void Delete(Guid id)
         {
+
             context.Categories.Remove(Get(id));
         }
 

@@ -11,7 +11,7 @@ using Task_5.DAL.Interfaces;
 
 namespace Task_5.BLL.Services
 {
-    public class CategoryService : IService<CategoryDTO>
+    public class CategoryService : ICategoryService
     {
         private IUnitOfWork _unit;
         IMapper mapper; 
@@ -35,6 +35,13 @@ namespace Task_5.BLL.Services
             _unit.Categories.Delete(id);
             _unit.Save();
         }
+
+        public IEnumerable<CategoryDTO> GetAllByPartName(string partName)
+        {
+            return mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(_unit.Categories.GetAll().Where(c => c.Name.ToLower().Contains(partName.ToLower())));
+        }
+
+
 
         public CategoryDTO Get(Guid id)
         {

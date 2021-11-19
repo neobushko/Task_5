@@ -16,9 +16,9 @@ namespace Task_5.Controllers
     [ApiController]
     public class RecordController : ControllerBase
     {
-        IService<RecordDTO> recordService;
+        IRecordService recordService;
         IMapper mapper;
-        public RecordController(IService<RecordDTO> recordService)
+        public RecordController(IRecordService recordService)
         {
             this.recordService = recordService;
             mapper = new MapperConfiguration(

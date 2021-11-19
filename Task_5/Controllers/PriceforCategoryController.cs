@@ -16,9 +16,9 @@ namespace Task_5.Controllers
     [ApiController]
     public class PriceforCategoryController : ControllerBase
     {
-        IService<PriceforCategoryDTO> priceforService;
+        IPriceforCategoryService priceforService;
         IMapper mapper;
-        public PriceforCategoryController(IService<PriceforCategoryDTO> priceforService)
+        public PriceforCategoryController(IPriceforCategoryService priceforService)
         {
             this.priceforService = priceforService;
             mapper = new MapperConfiguration(
@@ -48,6 +48,19 @@ namespace Task_5.Controllers
             {
                 HttpContext.Response.StatusCode = 404;
                 return new PriceForCategoryModel() {id = new Guid() };
+            }
+        }
+        [HttpGet("Name")]
+        public IEnumerable<PriceForCategoryModel> GetByName(string Name)
+        {
+            try
+            {
+                return mapper.Map<IEnumerable<PriceforCategoryDTO>, IEnumerable<PriceForCategoryModel>>(priceforService.GetAllByPartName(Name)); 
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 404;
+                return new List<PriceForCategoryModel>();
             }
         }
 

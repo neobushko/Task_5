@@ -17,9 +17,9 @@ namespace Task_5.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        IService<CategoryDTO> categoryService;
+        ICategoryService categoryService;
         IMapper mapper;
-        public CategoryController(IService<CategoryDTO> categoryService)
+        public CategoryController(ICategoryService categoryService)
         {
             this.categoryService = categoryService;
             mapper = new MapperConfiguration(cfg => cfg.CreateMap<CategoryDTO, CategoryModel>().ReverseMap()).CreateMapper();
@@ -33,7 +33,7 @@ namespace Task_5.Controllers
         }
 
         // GET api/<CategoryController>/5
-        [HttpGet("{id}")]
+        [HttpGet("GetById")]
         public CategoryModel Get(Guid id)
         {
             try
@@ -46,7 +46,22 @@ namespace Task_5.Controllers
                 HttpContext.Response.StatusCode = 404;
                 return new CategoryModel() { Name = "No such category", id = new Guid() };
             }
-            
+
+        }
+
+        [HttpGet("GetByName")]
+        public IEnumerable<CategoryModel> GetByName(string Name)
+        {
+            try
+            {
+                var category = mapper.Map<IEnumerable<CategoryDTO>, IEnumerable<CategoryModel>>(categoryService.GetAllByPartName(Name));
+                return category;
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 404;
+                return new List<CategoryModel>();
+            }
         }
 
         // POST api/<CategoryController>

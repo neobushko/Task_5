@@ -11,7 +11,7 @@ using Task_5.DAL.Interfaces;
 
 namespace Task_5.BLL.Services
 {
-    public class RoomService : IService<RoomDTO>
+    public class RoomService : IRoomService
     {
             
         private IUnitOfWork _unit;
@@ -44,6 +44,11 @@ namespace Task_5.BLL.Services
         public IEnumerable<RoomDTO> GetAll()
         {
             return mapper.Map<IEnumerable<Room>, IEnumerable<RoomDTO>>(_unit.Rooms.GetAll());
+        }
+
+        public IEnumerable<RoomDTO> GetByNumber(int Number)
+        {
+            return mapper.Map<IEnumerable<Room>, IEnumerable<RoomDTO>>(_unit.Rooms.GetAll().Where(c => c.Number == Number));
         }
 
         public void Update(RoomDTO item)

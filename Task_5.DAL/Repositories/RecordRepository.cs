@@ -60,8 +60,8 @@ namespace Task_5.DAL.Repositories
                     record.UserId = item.UserId;
                     record.User = context.Users.Find(item.UserId);
                 }
-                record.CheckIn = item.CheckIn;
-                record.CheckOut = item.CheckOut;
+                record.CheckIn = item.CheckIn.Date;
+                record.CheckOut = item.CheckOut.Date;
             }
         }
     }

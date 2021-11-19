@@ -11,7 +11,7 @@ using Task_5.DAL.Interfaces;
 
 namespace Task_5.BLL.Services
 {
-    public class RecordService : IService<RecordDTO>
+    public class RecordService : IRecordService
     {
         private IUnitOfWork _unit;
         IMapper mapper;
@@ -32,7 +32,8 @@ namespace Task_5.BLL.Services
         }
         public void Create(RecordDTO item)
         {
-            if (this.BaseService.IsFreeRoom(item.RoomId, item.CheckIn, item.CheckOut))
+
+            if (this.BaseService.IsFreeRoom(item.RoomId, item.CheckIn, item.CheckOut) && item.CheckOut.Day > item.CheckIn.Day)
             {
                 _unit.Records.Create(mapper.Map<RecordDTO, Record>(item));
                 _unit.Save();
