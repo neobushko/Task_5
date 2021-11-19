@@ -33,46 +33,62 @@ namespace Task_5.Controllers
         }
 
         // GET api/<CategoryController>/5
-        [HttpGet("{item}")]
-        public CategoryModel Get(Guid item)
+        [HttpGet("{id}")]
+        public CategoryModel Get(Guid id)
         {
             try
             {
-                var category = mapper.Map<CategoryDTO, CategoryModel>(categoryService.Get(item));
+                var category = mapper.Map<CategoryDTO, CategoryModel>(categoryService.Get(id));
                 return category;
             }
             catch
             {
-                return new CategoryModel() { Name = "No such category" };
+                HttpContext.Response.StatusCode = 404;
+                return new CategoryModel() { Name = "No such category", id = new Guid() };
             }
             
         }
-
-/*        [HttpGet("{item}")]
-        public CategoryModel Get(string item)
-        {
-            return mapper.Map<CategoryDTO, CategoryModel>(categoryService.Get(item));
-        }*/
 
         // POST api/<CategoryController>
         [HttpPost]
         public void Post([FromBody] CategoryModel item)
         {
-            categoryService.Create(mapper.Map<CategoryModel,CategoryDTO>(item));
+            try
+            {
+                categoryService.Create(mapper.Map<CategoryModel, CategoryDTO>(item));
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 400;
+            }
         }
 
         // PUT api/<CategoryController>/5
         [HttpPut]
         public void Put([FromBody] CategoryModel item)
         {
-            categoryService.Update(mapper.Map<CategoryModel, CategoryDTO>(item));
+            try
+            {
+                categoryService.Update(mapper.Map<CategoryModel, CategoryDTO>(item));
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 400;
+            }
         }
 
         // DELETE api/<CategoryController>/5
         [HttpDelete("{id}")]
         public void Delete(Guid id)
         {
-            categoryService.Delete(id);
+            try
+            {
+                categoryService.Delete(id);
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 400;
+            }
         }
     }
 }

@@ -20,6 +20,8 @@ namespace Task_5.DAL.Repositories
 
         public void Create(PriceforCategory item)
         {
+            if (_hotelContext.Prices.Find(item.id) != null)
+                throw new ArgumentException();
             _hotelContext.Prices.Add(item);
         }
 
@@ -30,7 +32,10 @@ namespace Task_5.DAL.Repositories
 
         public PriceforCategory Get(Guid id)
         {
-            return _hotelContext.Prices.Single(c => c.id == id);
+            var price = _hotelContext.Prices.Single(c => c.id == id);
+            if (price == null)
+                throw new ArgumentException();
+            return price;
         }
 
         public IEnumerable<PriceforCategory> GetAll()
@@ -42,12 +47,15 @@ namespace Task_5.DAL.Repositories
         {
             var price = Get(item.id);
             price.id = item.id;
-            price.Category = item.Category;
-            price.CategoryId = item.CategoryId;
+            if (_hotelContext.Categories.Find(item.CategoryId) != null)
+            {
+                price.Category = item.Category;
+                price.CategoryId = item.CategoryId;
+            }
             price.StartDate = item.StartDate;
             price.EndDate = item.EndDate;
             price.Price = item.Price;
-            price.Name = item.Name;
+            price.Name = item.Name ?? price.Name;
         }
     }
 }

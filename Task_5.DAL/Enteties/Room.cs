@@ -20,7 +20,7 @@ namespace Task_5.DAL.Enteties
         public Guid CategoryId { get;  set; }
         [ForeignKey("CategoryId")]
         public Category Category { get;  set; } 
-        public string Decription { get;  set; }
+        public string Description { get;  set; }
 
         public IEnumerable<Record> Records { get;  set; }
         public override bool Equals(object obj)
@@ -31,7 +31,7 @@ namespace Task_5.DAL.Enteties
                 return this.id == thatObj.id
                     && this.Number == thatObj.Number
                     && this.CategoryId == thatObj.CategoryId
-                    && this.Decription == thatObj.Decription;
+                    && this.Description == thatObj.Description;
             }
             else return base.Equals(obj);
         }

@@ -10,8 +10,8 @@ using Task_5.DAL.EF;
 namespace Task_5.DAL.Migrations
 {
     [DbContext(typeof(HotelContext))]
-    [Migration("20211114152441_mig2")]
-    partial class mig2
+    [Migration("20211118173503_descriptionNameFix")]
+    partial class descriptionNameFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,9 @@ namespace Task_5.DAL.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("id");
 
                     b.ToTable("Categories");
@@ -46,6 +49,9 @@ namespace Task_5.DAL.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -96,7 +102,7 @@ namespace Task_5.DAL.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Decription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Number")

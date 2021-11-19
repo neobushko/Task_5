@@ -26,56 +26,29 @@ namespace Task_5.BLL.Services
         }
         public void Create(CategoryDTO item)
         {
-            if (!IsExistsId(item.id))
-            {
-                _unit.Categories.Create(mapper.Map<CategoryDTO, Category>(item));
-                _unit.Save();
-            }
-            
+            _unit.Categories.Create(mapper.Map<CategoryDTO, Category>(item));
+            _unit.Save();
         }
 
         public void Delete(Guid id)
         {
-            if(IsExistsId(id))
-            { 
-                _unit.Categories.Delete(id);
-                _unit.Save();
-            }
+            _unit.Categories.Delete(id);
+            _unit.Save();
         }
 
         public CategoryDTO Get(Guid id)
         {
-            if (IsExistsId(id))
-                return mapper.Map<Category, CategoryDTO>(_unit.Categories.Get(id));
-            else throw new ArgumentException("there is no such id");
+            return mapper.Map<Category, CategoryDTO>(_unit.Categories.Get(id));
         }
-        /*        public CategoryDTO Get(string name)
-                {
-                    var category = mapper.Map<Category, CategoryDTO>(_unit.Categories.Get());
-                    if (category == null)
-                        throw new ArgumentException($"there is no category with current name ({name})");
-                    return category;
-                }*/
+
         public IEnumerable<CategoryDTO> GetAll()
         {
             return mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(_unit.Categories.GetAll());
         }
         public void Update(CategoryDTO item)
         {
-            if (IsExistsId(item.id))
-            {
-                _unit.Categories.Update(mapper.Map<CategoryDTO, Category>(item));
-                _unit.Save();
-            }
-
-        }
-        public bool IsExistsId(Guid id)
-        {
-            bool IsExist = false;
-            var category = mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(_unit.Categories.GetAll());
-            if (category.Any(c => c.id == id))
-                IsExist = true;
-            return IsExist;
+            _unit.Categories.Update(mapper.Map<CategoryDTO, Category>(item));
+            _unit.Save();
         }
     }
 }

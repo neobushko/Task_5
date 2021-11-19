@@ -21,17 +21,26 @@ namespace Task_5.DAL.Repositories
 
         public void Create(Room item)
         {
+            if (context.Rooms.Find(item.id) != null)
+                throw new ArgumentException($"there is already Room with such id: {item.id}");
+            if (context.Rooms.Find(item.CategoryId) == null)
+                throw new ArgumentException($"there is no Category with id: {item.CategoryId}");
             context.Rooms.Add(item);
         }
 
         public void Delete(Guid id)
         {
+            if (context.Rooms.Find(id) != null)
+                throw new ArgumentException($"there is already Room with such id: {id}");
             context.Rooms.Remove(Get(id));
         }
 
         public Room Get(Guid id)
         {
-            return context.Rooms.Include(u => u.Category).Single(c => c.id == id);
+            var room = context.Rooms.Include(u => u.Category).Single(c => c.id == id);
+            if (room == null)
+                throw new ArgumentException();
+            return room;
         }
 
         public IEnumerable<Room> GetAll()
@@ -44,9 +53,12 @@ namespace Task_5.DAL.Repositories
             var room = Get(item.id);
             room.id = item.id;
             room.Number = item.Number;
-            room.CategoryId = item.CategoryId;
-            room.Category = item.Category;
-            room.Decription = item.Decription;
+            if(context.Categories.Find(item.CategoryId) != null)
+            {
+                room.CategoryId = item.CategoryId;
+                room.Category = context.Categories.Find(item.CategoryId);
+            }
+            room.Description = item.Description ?? room.Description;
         }
     }
 }

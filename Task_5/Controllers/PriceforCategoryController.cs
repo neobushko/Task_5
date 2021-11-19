@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Hotel_Api.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,44 +17,80 @@ namespace Task_5.Controllers
     public class PriceforCategoryController : ControllerBase
     {
         IService<PriceforCategoryDTO> priceforService;
+        IMapper mapper;
         public PriceforCategoryController(IService<PriceforCategoryDTO> priceforService)
         {
             this.priceforService = priceforService;
+            mapper = new MapperConfiguration(
+                cfg =>
+                {
+                    cfg.CreateMap<PriceforCategoryDTO, PriceForCategoryModel>().ReverseMap();
+                    cfg.CreateMap<CategoryDTO, CategoryModel>().ReverseMap();
+                }).CreateMapper();
         }
 
         // GET: api/<PriceforCategoryController>
         [HttpGet]
-        public IEnumerable<PriceforCategoryDTO> Get()
+        public IEnumerable<PriceForCategoryModel> Get()
         {
-            return priceforService.GetAll();
+            return mapper.Map<IEnumerable<PriceforCategoryDTO>, IEnumerable<PriceForCategoryModel>>(priceforService.GetAll());
         }
 
         // GET api/<PriceforCategoryController>/5
         [HttpGet("{id}")]
-        public PriceforCategoryDTO Get(Guid id)
+        public PriceForCategoryModel Get(Guid id)
         {
-            return priceforService.Get(id);
+            try
+            {
+                return mapper.Map<PriceforCategoryDTO, PriceForCategoryModel>(priceforService.Get(id)); ;
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 404;
+                return new PriceForCategoryModel() {id = new Guid() };
+            }
         }
 
         // POST api/<PriceforCategoryController>
         [HttpPost]
-        public void Post([FromBody] PriceforCategoryDTO item)
+        public void Post([FromBody] PriceForCategoryModel item)
         {
-            priceforService.Create(item);
+            try
+            {
+                priceforService.Create(mapper.Map<PriceForCategoryModel, PriceforCategoryDTO>(item));
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 400;
+            }
         }
 
         // PUT api/<PriceforCategoryController>/5
         [HttpPut]
-        public void Put( [FromBody] PriceforCategoryDTO item)
+        public void Put( [FromBody] PriceForCategoryModel item)
         {
-            priceforService.Update(item);
+            try
+            {
+                priceforService.Update(mapper.Map<PriceForCategoryModel, PriceforCategoryDTO>(item));
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 400;
+            }
         }
 
         // DELETE api/<PriceforCategoryController>/5
         [HttpDelete("{id}")]
         public void Delete(Guid id)
         {
-            priceforService.Delete(id);
+            try
+            {
+                priceforService.Delete(id);
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 400;
+            }
         }
     }
 }

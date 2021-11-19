@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Task_5.BLL.DTO
+namespace Hotel_Api.Models
 {
-    public class RecordDTO
+    public class RecordModel
     {
         public Guid id { get; set; }
         public Guid RoomId { get; set; }
-        public RoomDTO Room { get; set; }
+        public RoomModel Room { get; set; }
         public Guid UserId { get; set; }
-        public UserDTO User { get; set; }
+        public UserModel User { get; set; }
         public DateTime CheckIn { get; set; }
         public DateTime CheckOut { get; set; }
         public override bool Equals(object obj)
         {
-            if (obj is RecordDTO)
+            if (obj is RecordModel)
             {
-                var thatObj = obj as RecordDTO;
+                var thatObj = obj as RecordModel;
                 return this.id == thatObj.id
                     && this.RoomId == thatObj.RoomId
                     && this.UserId == thatObj.UserId

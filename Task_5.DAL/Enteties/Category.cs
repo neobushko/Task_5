@@ -16,7 +16,7 @@ namespace Task_5.DAL.Enteties
         [Key]
         public Guid id { get;  set; }
         public string Name { get; set; }
-        public string Decription { get;  set; }
+        public string Description { get;  set; }
         public IEnumerable<Room> Rooms { get;  set; }
         public IEnumerable<PriceforCategory> Prices { get; set; }
         public override bool Equals(object obj)
@@ -25,7 +25,7 @@ namespace Task_5.DAL.Enteties
             {
                 var thatObj = obj as Category;
                 return this.id == thatObj.id
-                    && this.Decription == thatObj.Decription
+                    && this.Description == thatObj.Description
                     && this.Name == thatObj.Name;
             }
             else return base.Equals(obj);

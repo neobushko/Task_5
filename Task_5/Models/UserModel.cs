@@ -5,19 +5,21 @@ using System.Threading.Tasks;
 
 namespace Hotel_Api.Models
 {
-    public class CategoryModel
+    public class UserModel
     {
         public Guid id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string ContactPhone { get; set; }
+        public string Email { get; set; }
         public override bool Equals(object obj)
         {
-            if (obj is CategoryModel)
+            if (obj is UserModel)
             {
-                var thatObj = obj as CategoryModel;
+                var thatObj = obj as UserModel;
                 return this.id == thatObj.id
-                    && this.Description == thatObj.Description
-                    && this.Name == thatObj.Name;
+                    && this.Name == thatObj.Name
+                    && this.ContactPhone == thatObj.ContactPhone
+                    && this.Email == thatObj.Email;
             }
             else return base.Equals(obj);
         }

@@ -21,6 +21,8 @@ namespace Task_5.DAL.Repositories
 
         public void Create(Record item)
         {
+            if (context.Records.Find(item.id) != null)
+                throw new ArgumentException();
             context.Records.Add(item);
         }
 
@@ -31,7 +33,10 @@ namespace Task_5.DAL.Repositories
 
         public Record Get(Guid id)
         {
-            return context.Records.Include(u => u.User).Include(u => u.Room).ThenInclude(b => b.Category).Single(c => c.id == id);
+            var record = context.Records.Include(u => u.User).Include(u => u.Room).ThenInclude(b => b.Category).Single(c => c.id == id);
+            if (record == null)
+                throw new ArgumentException();
+            return record;
         }
 
         public IEnumerable<Record> GetAll()
@@ -41,14 +46,23 @@ namespace Task_5.DAL.Repositories
 
         public void Update(Record item)
         {
-            var record = Get(item.id);
-            record.id = item.id;
-            record.RoomId = item.RoomId;
-            record.Room = item.Room;
-            record.UserId = item.UserId;
-            record.User = item.User;
-            record.CheckIn = item.CheckIn;
-            record.CheckOut = item.CheckOut;
+            var record = context.Records.SingleOrDefault(s => s.id == item.id);
+            if (record != null)
+            {
+                record.id = item.id;
+                if (context.Rooms.Find(item.RoomId) != null)
+                {
+                    record.RoomId = item.RoomId;
+                    record.Room = context.Rooms.Find(item.RoomId);
+                }
+                if (context.Users.Find(item.UserId) != null)
+                {
+                    record.UserId = item.UserId;
+                    record.User = context.Users.Find(item.UserId);
+                }
+                record.CheckIn = item.CheckIn;
+                record.CheckOut = item.CheckOut;
+            }
         }
     }
 }

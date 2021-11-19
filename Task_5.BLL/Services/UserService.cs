@@ -24,29 +24,19 @@ namespace Task_5.BLL.Services
         }
         public void Create(UserDTO item)
         {
-            if (!IsExistsId(item.id))
-            {
-                _unit.Users.Create(mapper.Map<UserDTO, User>(item));
-                _unit.Save();
-            }
+            _unit.Users.Create(mapper.Map<UserDTO, User>(item));
+            _unit.Save();
         }
 
         public void Delete(Guid id)
         {
-            if (IsExistsId(id))
-            {
-                _unit.Users.Delete(id);
-                _unit.Save();
-            }
+            _unit.Users.Delete(id);
+            _unit.Save();
         }
 
         public UserDTO Get(Guid id)
         {
-            if (IsExistsId(id))
-            {
-                return mapper.Map<User, UserDTO>(_unit.Users.Get(id));
-            }
-            else throw new ArgumentException();
+            return mapper.Map<User, UserDTO>(_unit.Users.Get(id));
         }
 
         public IEnumerable<UserDTO> GetAll()
@@ -56,19 +46,8 @@ namespace Task_5.BLL.Services
 
         public void Update(UserDTO item)
         {
-            if (IsExistsId(item.id))
-            {
-                _unit.Users.Update(mapper.Map<UserDTO, User>(item));
-                _unit.Save();
-            }
-        }
-        public bool IsExistsId(Guid id)
-        {
-            bool IsExist = false;
-            var price = mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(_unit.Users.GetAll());
-            if (price.Any(c => c.id == id))
-                IsExist = true;
-            return IsExist;
+            _unit.Users.Update(mapper.Map<UserDTO, User>(item));
+            _unit.Save();
         }
     }
 }

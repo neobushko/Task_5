@@ -55,28 +55,28 @@ namespace TestProject1
                     id = new Guid("bdc0d03a-2d43-42f6-9062-4bf9ccdb5a01"),
                     Number = 1,
                     CategoryId = new Guid("adc0d03a-2d43-42f6-9062-4bf9ccdb5a01"),
-                    Decription = " (1) room"
+                    Description = " (1) room"
                 },
                 new RoomDTO()
                 {
                     id = new Guid("bdc0d03a-2d43-42f6-9062-4bf9ccdb5a02"),
                     Number = 2,
                     CategoryId = new Guid("adc0d03a-2d43-42f6-9062-4bf9ccdb5a01"),
-                    Decription = " (2) room"
+                    Description = " (2) room"
                 },
                 new RoomDTO()
                 {
                     id = new Guid("bdc0d03a-2d43-42f6-9062-4bf9ccdb5a03"),
                     Number = 3,
                     CategoryId = new Guid("adc0d03a-2d43-42f6-9062-4bf9ccdb5a02"),
-                    Decription = " (3) room"
+                    Description = " (3) room"
                 },
                 new RoomDTO()
                 {
                     id = new Guid("bdc0d03a-2d43-42f6-9062-4bf9ccdb5a04"),
                     Number = 4,
                     CategoryId = new Guid("adc0d03a-2d43-42f6-9062-4bf9ccdb5a03"),
-                    Decription = " (4) room"
+                    Description = " (4) room"
                 }
             };
             return rooms;

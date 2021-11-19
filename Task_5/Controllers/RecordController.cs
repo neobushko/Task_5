@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Hotel_Api.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,47 +17,82 @@ namespace Task_5.Controllers
     public class RecordController : ControllerBase
     {
         IService<RecordDTO> recordService;
-        
+        IMapper mapper;
         public RecordController(IService<RecordDTO> recordService)
         {
             this.recordService = recordService;
-            
-            
+            mapper = new MapperConfiguration(
+                cfg =>
+                {
+                    cfg.CreateMap<RecordDTO, RecordModel>().ReverseMap();
+                    cfg.CreateMap<UserDTO, UserModel>().ReverseMap();
+                    cfg.CreateMap<RoomDTO, RoomModel>().ReverseMap();
+                    cfg.CreateMap<CategoryDTO, CategoryModel>().ReverseMap();
+                }).CreateMapper();
         }
 
         // GET: api/<RecordController>
         [HttpGet]
-        public IEnumerable<RecordDTO> Get()
+        public IEnumerable<RecordModel> Get()
         {
-            return recordService.GetAll();
+            return mapper.Map<IEnumerable<RecordDTO>, IEnumerable<RecordModel>>(recordService.GetAll());
         }
 
         // GET api/<RecordController>/5
         [HttpGet("{id}")]
-        public RecordDTO Get(Guid id)
+        public RecordModel Get(Guid id)
         {
-            return recordService.Get(id);
+            try
+            {
+                return mapper.Map<RecordDTO, RecordModel>(recordService.Get(id));
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 404;
+                return new RecordModel() {id = new Guid() };
+            }
         }
 
         // POST api/<RecordController>
         [HttpPost]
-        public void Post([FromBody] RecordDTO item)
+        public void Post([FromBody] RecordModel item)
         {
-                recordService.Create(item);
+            try
+            {
+                recordService.Create(mapper.Map<RecordModel,RecordDTO>(item));
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 400;
+            }
         }
 
         // PUT api/<RecordController>/5
         [HttpPut]
-        public void Put( [FromBody] RecordDTO item)
+        public void Put( [FromBody] RecordModel item)
         {
-            recordService.Update(item);
+            try
+            {
+                recordService.Update(mapper.Map<RecordModel, RecordDTO>(item));
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 400;
+            }
         }
 
         // DELETE api/<RecordController>/5
         [HttpDelete("{id}")]
         public void Delete(Guid id)
         {
-            recordService.Delete(id);
+            try
+            {
+                recordService.Delete(id);
+            }
+            catch
+            {
+                HttpContext.Response.StatusCode = 400;
+            }
         }
     }
 }

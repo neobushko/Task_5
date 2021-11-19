@@ -23,6 +23,8 @@ namespace Task_5.DAL.Repositories
 
         public void Create(Category item)
         {
+            if (context.Categories.Find(item.id) != null)
+                throw new ArgumentException($"there is already Room with such id: {item.id}");
             context.Categories.Add(item);
         }
 
@@ -34,10 +36,11 @@ namespace Task_5.DAL.Repositories
 
         public Category Get(Guid id)
         {
-            return context.Categories.Single(c => c.id == id);
+            var category = context.Categories.Single(c => c.id == id);
+            if (category == null)
+                throw new ArgumentException();
+            return category;
         }
-/*        public Category Get(string name)
-            => context.Categories.Single(s => s.Name == name);*/
 
         public IEnumerable<Category> GetAll()
         {
@@ -49,8 +52,8 @@ namespace Task_5.DAL.Repositories
         {
             var category = Get(item.id);
             category.id = item.id;
-            category.Name = item.Name;
-            category.Decription = item.Decription;
+            category.Name = item.Name ?? category.Name;
+            category.Description = item.Description ?? category.Description;
         }
     }
 }
