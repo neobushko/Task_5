@@ -1,4 +1,6 @@
-﻿using Microsoft.CSharp;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.CSharp;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using Task_5.DAL.Enteties;
 
 namespace Task_5.DAL.EF
 {
-    public class HotelContext : DbContext
+    public class HotelContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Room> Rooms { get; set; }

@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task_5.BLL.DTO;
 
 namespace Task_5.BLL.Interfaces
 {
-    public interface IService<T> where T: class
+    public interface IUserService
     {
-        IEnumerable<T> GetAll();
-        T Get(Guid id);
-        void Create(T item);
-        void Update(T item);
+        IEnumerable<UserDTO> GetAll();
+        UserDTO Get(Guid id);
+        void Create(UserDTO item);
+        void Update(UserDTO item);
         void Delete(Guid id);
     }
 }

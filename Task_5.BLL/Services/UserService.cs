@@ -11,7 +11,7 @@ using Task_5.DAL.Interfaces;
 
 namespace Task_5.BLL.Services
 {
-    public class UserService : IService<UserDTO>
+    public class UserService : IUserService
     {
         private IUnitOfWork _unit;
         IMapper mapper;

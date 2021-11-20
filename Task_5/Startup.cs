@@ -20,6 +20,7 @@ using Task_5.BLL.Interfaces;
 using Task_5.BLL.DTO;
 using Task_5.BLL.Services;
 using Task_5.DAL.EF;
+using Microsoft.AspNetCore.Identity;
 
 //using Task_5.BLL.Interfaces;
 //using Task_5.BLL.DTO;
@@ -47,8 +48,26 @@ namespace Task_5
             services.AddTransient<IRoomService, RoomService>();
             services.AddTransient<IRecordService, RecordService>();
             services.AddTransient<ICategoryService, CategoryService>();
-            services.AddTransient<IService<UserDTO>, UserService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPriceforCategoryService, PriceforCategoryService>();
+
+            services.AddTransient<SignInManager<User>>();
+            services.AddTransient<UserManager<User>>();
+
+            services.AddIdentity<User, IdentityRole<Guid>>(options =>
+            {
+                // Default Password settings.
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequiredUniqueChars = 0;
+            }).AddRoles<IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<HotelContext>();
+
+
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -70,7 +89,10 @@ namespace Task_5
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+
 
             app.UseEndpoints(endpoints =>
             {

@@ -21,7 +21,7 @@ namespace Task_5.DAL.Repositories
 
         public void Create(User item)
         {
-            if (context.Users.Find(item.id) != null)
+            if (context.Users.Find(item.Id) != null)
                 throw new ArgumentException();
             context.Users.Add(item);
         }
@@ -33,7 +33,7 @@ namespace Task_5.DAL.Repositories
 
         public User Get(Guid id)
         {
-            var user = context.Users.Single(c => c.id == id);
+            var user = context.Users.Single(c => c.Id == id);
             if (user == null)
                 throw new ArgumentException();
             return user;
@@ -46,10 +46,10 @@ namespace Task_5.DAL.Repositories
 
         public void Update(User item)
         {
-            var user = Get(item.id);
-            user.id = item.id;
+            var user = Get(item.Id);
+            user.Id = item.Id;
             user.Name = item.Name ?? user.Name;
-            user.ContactPhone = item.ContactPhone ?? user.ContactPhone;
+            user.PhoneNumber = item.PhoneNumber ?? user.PhoneNumber;
             user.Email = item.Email ?? user.Email;
         }
     }

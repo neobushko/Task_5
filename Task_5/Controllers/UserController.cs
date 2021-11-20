@@ -16,9 +16,9 @@ namespace Task_5.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        IService<UserDTO> userService;
+        IUserService userService;
         IMapper mapper;
-        public UserController(IService<UserDTO> userService)
+        public UserController(IUserService userService)
         {
             this.userService = userService;
             mapper = new MapperConfiguration(cfg => cfg.CreateMap<UserDTO, UserModel>().ReverseMap()).CreateMapper();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,21 +9,31 @@ using Task_5.BLL.Interfaces;
 
 namespace Task_5.Controllers
 {
-    public class BaseController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BaseController : ControllerBase
     {
+        
         IBaseService baseService;
+
         public BaseController(IBaseService baseService)
         {
             this.baseService = baseService;
         }
 
-        
-
-        public bool IsFreeRoom(RecordDTO item)
+        [HttpGet("Get")]
+        public BenefitPeriod Get(DateTime startPeriod, DateTime endPeriod)
         {
-            return baseService.IsFreeRoom(item.RoomId, item.CheckIn, item.CheckOut);
+            return baseService.BenefitForPeriod(startPeriod, endPeriod);
         }
 
+        //[HttpGet("IsFreeRoom")]
+        //public bool IsFreeRoom(RecordDTO item)
+        //{
+        //    return baseService.IsFreeRoom(item.RoomId, item.CheckIn, item.CheckOut);
+        //}
+
+        [HttpGet("FreeRoomsForDate")]
         public IEnumerable<RoomDTO> FreeRoomsForDate(DateTime checkIn, DateTime checkOut)
         {
             return baseService.FreeRoomsForDate(checkIn, checkOut);

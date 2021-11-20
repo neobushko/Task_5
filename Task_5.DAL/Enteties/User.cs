@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,28 +8,23 @@ using System.Threading.Tasks;
 
 namespace Task_5.DAL.Enteties
 {
-    public class User
+    public class User : IdentityUser<Guid>
     {
         public User()
         {
-            id = Guid.NewGuid();
+            Id = Guid.NewGuid();
         }
-        [Key]
-        public Guid id { get;  set; }
+
         public string Name { get;  set; }
-        public string ContactPhone { get;  set; }
-        public string Email { get;  set; }
 
         public IEnumerable<Record> Records { get;  set; }
         public override bool Equals(object obj)
-        {
+        {   
             if(obj is User)
             {
                 var thatObj = obj as User;
-                return this.id == thatObj.id
-                    && this.Name == thatObj.Name
-                    && this.ContactPhone == thatObj.ContactPhone
-                    && this.Email == thatObj.Email;
+                    return this.Id == thatObj.Id
+                    && this.Name == thatObj.Name;
             }
             else return base.Equals(obj);
         }
