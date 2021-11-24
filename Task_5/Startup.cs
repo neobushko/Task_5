@@ -40,7 +40,7 @@ namespace Task_5
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string conString = "Server=DESKTOP-FTEU4FU\\SQLEXPRESS;Database=Hotel;Trusted_Connection=True;";
+            var conString = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<HotelContext>(options => options.UseSqlServer(conString));
             services.AddTransient<IBaseService, BaseService>();
