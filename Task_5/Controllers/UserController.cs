@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Task_5.BLL.DTO;
 using Task_5.BLL.Interfaces;
 using Hotel_Api.Models;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,8 +17,8 @@ namespace Task_5.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        IUserService userService;
-        IMapper mapper;
+        private IUserService userService;
+        private IMapper mapper;
         public UserController(IUserService userService)
         {
             this.userService = userService;
@@ -45,9 +46,15 @@ namespace Task_5.Controllers
                 return new UserModel() {id = new Guid() };
             }
         }
+        [HttpGet("GetByPartName")]
+        public IEnumerable<UserModel> GetByPartName(string part)
+        {
+            return mapper.Map<IEnumerable<UserDTO>, IEnumerable<UserModel>>(userService.GetByPartName(part));
+        }
 
         // POST api/<UserController>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public void Post([FromBody] UserModel item)
         {
             try
@@ -62,6 +69,7 @@ namespace Task_5.Controllers
 
         // PUT api/<UserController>/5
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public void Put( [FromBody] UserModel item)
         {
             try
@@ -76,6 +84,7 @@ namespace Task_5.Controllers
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public void Delete(Guid id)
         {
             try

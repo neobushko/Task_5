@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Hotel_Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +17,12 @@ namespace Hotel_PL.Controllers
     public class AccountController : Controller
     {
 
-        IMapper mapper;
-        IUserService userService;
-        SignInManager<User> signInManager;
-        UserManager<User> userManager;
-        RoleManager<IdentityRole<Guid>> roleManager;
+        private IMapper mapper;
+        private IUserService userService;
+        private SignInManager<User> signInManager;
+        private UserManager<User> userManager;
+        private RoleManager<IdentityRole<Guid>> roleManager;
+
 
         public AccountController(IUserService userService, SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager)
         {
@@ -37,11 +40,11 @@ namespace Hotel_PL.Controllers
         }
 
         [HttpPost("Registration")]
-        public async Task Register(RegisterViewModel regModel)
+        public async Task Register(RegisterViewModel regModel, string email)
         {
             var user = mapper.Map<RegisterViewModel, User>(regModel);
             user.UserName = regModel.PhoneNumber;
-
+            user.Email = email;
             var result = await userManager.CreateAsync(user, regModel.Password);
 
             var UserRoles = from r in roleManager.Roles.ToList()
@@ -79,6 +82,7 @@ namespace Hotel_PL.Controllers
         }
 
         [HttpPost("AddRole")]
+        [Authorize(Roles = "Admin")]
         public async Task AddRole(string name)
         {
             IdentityRole<Guid> role = new IdentityRole<Guid>(name);
@@ -95,7 +99,7 @@ namespace Hotel_PL.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("Logout")]
         public async Task Logout()
         {
             await signInManager.SignOutAsync();

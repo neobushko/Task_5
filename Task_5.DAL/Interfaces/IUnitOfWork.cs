@@ -15,6 +15,7 @@ namespace Task_5.DAL.Interfaces
         IRepository<User> Users { get; }
         IRepository<Record> Records { get; }
         IRepository<PriceforCategory> PriceforCategories { get; }
+
         void Save();
     }
 }

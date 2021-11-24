@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Hotel_Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,8 @@ namespace Task_5.Controllers
     [ApiController]
     public class RecordController : ControllerBase
     {
-        IRecordService recordService;
-        IMapper mapper;
+        private IRecordService recordService;
+        private IMapper mapper;
         public RecordController(IRecordService recordService)
         {
             this.recordService = recordService;
@@ -69,6 +70,7 @@ namespace Task_5.Controllers
 
         // PUT api/<RecordController>/5
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public void Put( [FromBody] RecordModel item)
         {
             try
@@ -83,6 +85,7 @@ namespace Task_5.Controllers
 
         // DELETE api/<RecordController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public void Delete(Guid id)
         {
             try

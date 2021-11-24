@@ -16,7 +16,8 @@ namespace Task_5.DAL.EF
         public DbSet<Category> Categories { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Record> Records { get; set; }
-        public DbSet<User> Users { get; set; }
+
+        //public DbSet<User> Users { get; set; }
         public DbSet<PriceforCategory> Prices { get; set; }
 
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Task_5.BLL.DTO;
 using Task_5.BLL.Interfaces;
 using Hotel_Api.Models;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,8 +17,8 @@ namespace Task_5.Controllers
     [ApiController]
     public class RoomController : ControllerBase
     {
-        IRoomService roomController;
-        IMapper mapper;
+        private IRoomService roomController;
+        private IMapper mapper;
         public RoomController(IRoomService roomController)
         {
             this.roomController = roomController;
@@ -67,6 +68,7 @@ namespace Task_5.Controllers
         }
         // POST api/<RoomController>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public void Post([FromBody] RoomModel item)
         {
             try
@@ -81,6 +83,7 @@ namespace Task_5.Controllers
 
         // PUT api/<RoomController>/5
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public void Put( [FromBody] RoomModel item)
         {
             try
@@ -95,6 +98,7 @@ namespace Task_5.Controllers
 
         // DELETE api/<RoomController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public void Delete(Guid id)
         {
             try

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Hotel_Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,8 @@ namespace Task_5.Controllers
     [ApiController]
     public class PriceforCategoryController : ControllerBase
     {
-        IPriceforCategoryService priceforService;
-        IMapper mapper;
+        private IPriceforCategoryService priceforService;
+        private IMapper mapper;
         public PriceforCategoryController(IPriceforCategoryService priceforService)
         {
             this.priceforService = priceforService;
@@ -66,6 +67,7 @@ namespace Task_5.Controllers
 
         // POST api/<PriceforCategoryController>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public void Post([FromBody] PriceForCategoryModel item)
         {
             try
@@ -80,6 +82,7 @@ namespace Task_5.Controllers
 
         // PUT api/<PriceforCategoryController>/5
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public void Put( [FromBody] PriceForCategoryModel item)
         {
             try
@@ -94,6 +97,7 @@ namespace Task_5.Controllers
 
         // DELETE api/<PriceforCategoryController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public void Delete(Guid id)
         {
             try

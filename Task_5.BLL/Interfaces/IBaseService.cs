@@ -7,10 +7,8 @@ using Task_5.BLL.DTO;
 
 namespace Task_5.BLL.Interfaces
 {
-    public interface IBaseService
+    public interface IBaseService : ICheckRooms, ICompareThreeDates
     {
-        public bool IsFreeRoom(Guid roomId, DateTime checkIn, DateTime checkOut);
-        public IEnumerable<RoomDTO> FreeRoomsForDate(DateTime checkIn, DateTime checkOut);
         public BenefitPeriod BenefitForPeriod(DateTime startDate, DateTime endDate);
     }
 }

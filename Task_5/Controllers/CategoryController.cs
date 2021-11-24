@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Hotel_Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +19,8 @@ namespace Task_5.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        ICategoryService categoryService;
-        IMapper mapper;
+        private ICategoryService categoryService;
+        private IMapper mapper;
         public CategoryController(ICategoryService categoryService)
         {
             this.categoryService = categoryService;
@@ -38,12 +40,15 @@ namespace Task_5.Controllers
         {
             try
             {
+                Log.Information("User caused Get_Category");
                 var category = mapper.Map<CategoryDTO, CategoryModel>(categoryService.Get(id));
+                Log.Information("User get category successfully");
                 return category;
             }
-            catch
+            catch (Exception e)
             {
                 HttpContext.Response.StatusCode = 404;
+                Log.Warning("Program didn't find Category {0}", id, e);
                 return new CategoryModel() { Name = "No such category", id = new Guid() };
             }
 
@@ -54,40 +59,51 @@ namespace Task_5.Controllers
         {
             try
             {
+                Log.Information("User caused GetByName_Category");
                 var category = mapper.Map<IEnumerable<CategoryDTO>, IEnumerable<CategoryModel>>(categoryService.GetAllByPartName(Name));
+                Log.Information("Sucess with GetByName Category");
                 return category;
             }
-            catch
+            catch (Exception e)
             {
                 HttpContext.Response.StatusCode = 404;
+                Log.Warning("Program didn't find Category {0}", Name, e);
                 return new List<CategoryModel>();
             }
         }
 
         // POST api/<CategoryController>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public void Post([FromBody] CategoryModel item)
         {
             try
             {
+                Log.Information("User caused Post Category");
                 categoryService.Create(mapper.Map<CategoryModel, CategoryDTO>(item));
+                Log.Information("Success with Post Category");
             }
-            catch
+            catch (Exception e)
             {
                 HttpContext.Response.StatusCode = 400;
+                Log.Warning("Program can't create such Category", e);
             }
         }
 
         // PUT api/<CategoryController>/5
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public void Put([FromBody] CategoryModel item)
         {
             try
             {
+                Log.Information("User caused Put Category");
                 categoryService.Update(mapper.Map<CategoryModel, CategoryDTO>(item));
+                Log.Information("Success with Post Category");
             }
-            catch
+            catch (Exception e)
             {
+                Log.Warning("Program can't update such Category", e);
                 HttpContext.Response.StatusCode = 400;
             }
         }
@@ -98,11 +114,14 @@ namespace Task_5.Controllers
         {
             try
             {
+                Log.Information("User caused Delete Category");
                 categoryService.Delete(id);
+                Log.Information("Success with Delete Category");
             }
-            catch
+            catch (Exception e)
             {
                 HttpContext.Response.StatusCode = 400;
+                Log.Warning("Program can't delete such Category", id, e);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,8 @@ namespace Task_5.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
-        
-        IBaseService baseService;
+
+        private IBaseService baseService;
 
         public BaseController(IBaseService baseService)
         {
@@ -22,6 +23,7 @@ namespace Task_5.Controllers
         }
 
         [HttpGet("Get")]
+        [Authorize(Roles = "Admin")]
         public BenefitPeriod Get(DateTime startPeriod, DateTime endPeriod)
         {
             return baseService.BenefitForPeriod(startPeriod, endPeriod);
@@ -32,7 +34,6 @@ namespace Task_5.Controllers
         //{
         //    return baseService.IsFreeRoom(item.RoomId, item.CheckIn, item.CheckOut);
         //}
-
         [HttpGet("FreeRoomsForDate")]
         public IEnumerable<RoomDTO> FreeRoomsForDate(DateTime checkIn, DateTime checkOut)
         {

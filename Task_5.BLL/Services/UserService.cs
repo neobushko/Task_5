@@ -44,6 +44,11 @@ namespace Task_5.BLL.Services
             return mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(_unit.Users.GetAll());
         }
 
+        public IEnumerable<UserDTO> GetByPartName(string part)
+        {
+            return mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(_unit.Users.GetAll().Where(s => s.Name.ToLower().Contains(part.ToLower())));
+        }
+
         public void Update(UserDTO item)
         {
             _unit.Users.Update(mapper.Map<UserDTO, User>(item));

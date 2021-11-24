@@ -30,7 +30,14 @@ namespace Task_5.BLL.Services
                 cfg.CreateMap<PriceforCategory, PriceforCategoryDTO>().ReverseMap();
             }).CreateMapper();
         }
-
+        /// <summary>
+        /// First of all gets all the necessary PriceForCategories for all records in db
+        /// Then by using foreach for each record multiply price (from PriceForCategory) on amount of days
+        /// , that equals to number days this PriceForCategory in this record (0 <. number days <=. days in record)
+        /// </summary>
+        /// <param name="startPeriod"></param>
+        /// <param name="endPeriod"></param>
+        /// <returns>new entity with property Benefit equals benefit for BD in period (startPeriod, endPeriod)</returns>
         public BenefitPeriod BenefitForPeriod(DateTime startPeriod, DateTime endPeriod)
         {
 
@@ -40,33 +47,22 @@ namespace Task_5.BLL.Services
             var records = mapper.Map<IEnumerable<Record>, IEnumerable<RecordDTO>>(_unit.Records.GetAll());
             var prices = mapper.Map<IEnumerable<PriceforCategory>, IEnumerable<PriceforCategoryDTO>>(_unit.PriceforCategories.GetAll());
             decimal benefitMain = default(Decimal);
-            decimal benefitRecord = default(Decimal);
             foreach (var record in records)
             {
                 //point of start into our periodStart
                 IEnumerable<PriceforCategoryDTO> pricesRecord;
                 try
                 {
-                    bool s;
-                    foreach(var p in prices)
-                    {
-                        s = p.CategoryId == record.Room.CategoryId && this.InInterval(record.CheckIn, record.CheckOut, p.StartDate, p.EndDate);
-
-                    }
                     pricesRecord = prices.Where(p => p.CategoryId == record.Room.CategoryId && this.InInterval(record.CheckIn, record.CheckOut, p.StartDate, p.EndDate));
                 }
                 catch
                 {
                     throw new ArgumentException();
                 }
-                //start benefit to 0.0!
-                benefitRecord = default(Decimal);
                 foreach(var price in pricesRecord)
                 {
-
-                    benefitRecord += (price.Price * (LowestData(record.CheckOut, price.EndDate, endPeriod) - BiggestData(record.CheckIn, price.StartDate, startPeriod)).Days);
+                    benefitMain += (price.Price * (LowestData(record.CheckOut, price.EndDate, endPeriod) - BiggestData(record.CheckIn, price.StartDate, startPeriod)).Days);
                 }
-                benefitMain += benefitRecord;
             }
             return new BenefitPeriod() { Benefit = benefitMain, Records = records, StartPeriod = startPeriod, EndPeriod = endPeriod };
         }
@@ -107,18 +103,26 @@ namespace Task_5.BLL.Services
 
         public bool IsFreeRoom(Guid roomId, DateTime checkIn, DateTime checkOut)
         {
-            IEnumerable<RecordDTO> free;
+            bool isFree;
             IEnumerable<RecordDTO> records = mapper.Map<IEnumerable<Record>, IEnumerable<RecordDTO>>(_unit.Records.GetAll());
 
-            free = records.Where(c => c.RoomId == roomId && InInterval(c.CheckIn, c.CheckOut, checkIn, checkOut));
-            return !free.Any();
+            isFree = !records.Any(c => c.RoomId == roomId && InInterval(c.CheckIn, c.CheckOut, checkIn, checkOut));
+            return isFree;
         }
-        private bool InInterval(DateTime mainStart, DateTime mainEnd, DateTime outerStart, DateTime outerEnd)
+        /// <summary>
+        /// Checks does the 'other' interval of time(from otherStart to otherEnd) intersects with the 'main' interval of time
+        /// </summary>
+        /// <param name="mainStart"></param>
+        /// <param name="mainEnd"></param>
+        /// <param name="otherStart"></param>
+        /// <param name="otherEnd"></param>
+        /// <returns> true - if 'other' intersects 'main', and vice versa</returns>
+        public bool InInterval(DateTime mainStart, DateTime mainEnd, DateTime otherStart, DateTime otherEnd)
         {
             bool inInterval = false;
-            if (   (outerEnd >= mainStart && outerEnd <= mainEnd)
-                || (outerStart >= mainStart && outerStart <= mainEnd)
-                || (outerStart <= mainStart && outerEnd >= mainEnd))
+            if (   (otherEnd >= mainStart && otherEnd <= mainEnd)
+                || (otherStart >= mainStart && otherStart <= mainEnd)
+                || (otherStart <= mainStart && otherEnd >= mainEnd))
                 inInterval = true;
             return inInterval;
         }

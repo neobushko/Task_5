@@ -14,5 +14,6 @@ namespace Task_5.BLL.Interfaces
         void Create(UserDTO item);
         void Update(UserDTO item);
         void Delete(Guid id);
+        IEnumerable<UserDTO> GetByPartName(string part);
     }
 }
